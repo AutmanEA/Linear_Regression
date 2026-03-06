@@ -2,21 +2,8 @@ import json
 import os
 
 
-class Estimator:
-    """docs"""
-    def __init__(self, mileage, thetas_json):
-        """docs"""
-        self.mileage = mileage
-        self.t0 = thetas_json.get('theta0', 0)
-        self.t1 = thetas_json.get('theta1', 0)
-
-    def estimate(self):
-        """docs"""
-        return self.t0 + (self.t1 * self.mileage)
-
-
 def init_thetas():
-    """docstring"""
+    """creates thetas.json file with default value"""
     with open('./res/thetas.json', 'w') as file:
         thetas = {
             "theta0": 0,
@@ -26,7 +13,8 @@ def init_thetas():
 
 
 def main():
-    """docstring"""
+    """this program takes trained or default parameters from file thetas.json
+    and estimate price of a car based on its mileage"""
     if not os.path.exists("./res/thetas.json"):
         init_thetas()
     with open('./res/thetas.json', 'r') as file:
@@ -40,8 +28,10 @@ def main():
             return
     try:
         km = int(input("Enter a mileage: "))
-        price = Estimator(km, thetas_json).estimate()
-        print("The estimated price is:", price)
+        t0 = thetas_json.get('theta0', 0)
+        t1 = thetas_json.get('theta1', 0)
+        estimatePrice = t0 + (t1 * km)
+        print("The estimated price is:", estimatePrice)
     except EOFError:
         print("invalid EOF on input")
     except Exception as e:
