@@ -1,15 +1,5 @@
-import json
 import os
-
-
-def init_thetas():
-    """creates thetas.json file with default value"""
-    with open('./res/thetas.json', 'w') as file:
-        thetas = {
-            "theta0": 0,
-            "theta1": 0
-        }
-        json.dump(thetas, file, indent=4)
+from thetas import init_thetas, load_thetas
 
 
 def main():
@@ -17,16 +7,8 @@ def main():
     and estimate price of a car based on its mileage"""
     if not os.path.exists("./res/thetas.json"):
         init_thetas()
-    with open('./res/thetas.json', 'r') as file:
-        try:
-            thetas_json = json.load(file)
-        except Exception as e:
-            print("Error:", e)
-            return
-        except KeyboardInterrupt:
-            print("program stopped manualy")
-            return
     try:
+        thetas_json = load_thetas()
         km = int(input("Enter a mileage: "))
         t0 = thetas_json.get('theta0', 0)
         t1 = thetas_json.get('theta1', 0)
